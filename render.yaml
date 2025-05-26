@@ -1,0 +1,13 @@
+services:
+  # A Node.js web service
+  - type: web
+    name: ai-code-assistance
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: HF_MODEL_CODELLAMA
+        value: codellama/CodeLlama-7b-hf
+      - key: HF_MODEL_STARCODER
+        value: bigcode/starcoder
+    autoDeploy: true

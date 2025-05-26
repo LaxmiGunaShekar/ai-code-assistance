@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Assistance - Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Universal responsive container */
+        .documentation-container {
+            width: 90%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: clamp(1rem, 3vw, 3rem);
+        }
+        
+        /* Responsive typography */
+        .documentation-container h1 {
+            font-size: clamp(1.8rem, 4vw, 3.5rem);
+            margin-bottom: clamp(1.5rem, 3vw, 3rem);
+            text-align: center;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Responsive card design */
+        .doc-section {
+            margin-bottom: clamp(1.5rem, 3vw, 3rem);
+            padding: clamp(1.2rem, 3vw, 2.5rem);
+            border-radius: 12px;
+            background-color: var(--dark);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .doc-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            border: 1px solid var(--primary);
+        }
+        
+        /* Responsive headings */
+        .doc-section h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: clamp(0.6rem, 1.5vw, 1rem);
+            margin-bottom: clamp(1rem, 2vw, 2rem);
+            font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+        }
+        
+        /* Responsive text */
+        .doc-section p, .doc-section li {
+            color: var(--light);
+            font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+            line-height: 1.7;
+            margin-bottom: clamp(0.8rem, 1.5vw, 1.2rem);
+        }
+        
+        .doc-section ul, .doc-section ol {
+            margin-left: clamp(1.2rem, 2vw, 2rem);
+            margin-bottom: clamp(1.2rem, 2vw, 2rem);
+        }
+        
+        .doc-section strong {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+        
+        /* Responsive code blocks */
+        .code-block {
+            background-color: var(--code-bg);
+            color: #f5f5f5;
+            padding: clamp(1rem, 2vw, 2rem);
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            margin: clamp(1rem, 2vw, 2rem) 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .code-block pre {
+            margin: 0;
+            font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+            line-height: 1.6;
+        }
+        
+        /* Specific adjustments for very small screens */
+        @media screen and (max-width: 360px) {
+            .documentation-container {
+                width: 95%;
+                padding: 0.8rem;
+            }
+            
+            .doc-section {
+                padding: 1rem;
+                margin-bottom: 1.2rem;
+            }
+        }
+        
+        /* Specific adjustments for very large screens (4K and above) */
+        @media screen and (min-width: 2560px) {
+            .documentation-container {
+                max-width: 2000px;
+            }
+            
+            body {
+                font-size: 18px; /* Base font size increase for 4K */
+            }
+        }
+        
+        /* Print styles for better printing */
+        @media print {
+            .documentation-container {
+                width: 100%;
+                max-width: none;
+                padding: 0;
+            }
+            
+            .doc-section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            
+            .doc-section:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <img src="img/code-logo.png" alt="AI Code Assistance Logo">
+            <h1>AI Code Assistance</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai.html">Code Assistant</a></li>
+                <li><a href="documentation.html" class="active">Documentation</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="documentation-container">
+            <h1>AI Code Assistance Documentation</h1>
+            
+            <div class="doc-section">
+                <h2>Getting Started</h2>
+                <p>AI Code Assistance is a tool that helps developers analyze, optimize, explain, and debug their code using AI-powered suggestions.</p>
+                <p>To get started, navigate to the Code Assistant page and paste your code into the editor.</p>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Features</h2>
+                <ul>
+                    <li><strong>Code Analysis</strong> - Identifies potential issues and best practices</li>
+                    <li><strong>Code Optimization</strong> - Suggests improvements for better performance</li>
+                    <li><strong>Code Explanation</strong> - Explains what your code does in plain English</li>
+                    <li><strong>Debugging</strong> - Helps identify and fix errors in your code</li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Supported Languages</h2>
+                <p>AI Code Assistance currently supports the following languages:</p>
+                <ul>
+                    <li>JavaScript</li>
+                    <li>Python</li>
+                    <li>Java</li>
+                    <li>C#</li>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                </ul>
+            </div>
+            
+            <div class="doc-section">
+                <h2>Example Usage</h2>
+                <p>Here's an example of how to use the Code Assistant:</p>
+                <ol>
+                    <li>Select your programming language from the dropdown</li>
+                    <li>Enter or paste your code in the editor</li>
+                    <li>Click on one of the assistant functions (Analyze, Optimize, Explain, Debug)</li>
+                    <li>Review the AI suggestions in the output panel</li>
+                </ol>
+                <div class="code-block">
+                    <pre>// Example JavaScript code
+function example() {
+    console.log("Hello, AI Code Assistance!");
+}
+
+example();</pre>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <a href="https://www.cursor.com/" class="footgreen">CURSOR</a>
+        <a href="https://www.netlify.com/" class="footgreen">NETLIFY</a>
+        <a href="https://gemini.google.com/app?hl=en-IN" class="footwhite">GEMINI</a>
+        <a href="https://github.com/engineer-man/piston" class="footwhite">PISTON</a>
+    </footer>
+</body>
+</html>

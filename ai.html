@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI CODE ASSISTANCE</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ai.css">
+    <link rel="stylesheet" href="chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Essential CodeMirror files -->
+    <link rel="stylesheet" href="lib/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="lib/codemirror/theme/dracula.css">
+    <!-- CodeMirror addons CSS -->
+    <link rel="stylesheet" href="lib/codemirror/addon/hint/show-hint.css">
+    <link rel="stylesheet" href="lib/codemirror/addon/fold/foldgutter.css">
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- CodeMirror core -->
+    <script src="lib/codemirror/lib/codemirror.js"></script>
+
+    <!-- Language modes -->
+    <script src="lib/codemirror/mode/xml/xml.js"></script>
+    <script src="lib/codemirror/mode/javascript/javascript.js"></script>
+    <script src="lib/codemirror/mode/python/python.js"></script>
+    <script src="lib/codemirror/mode/clike/clike.js"></script>
+
+    <!-- CodeMirror addons -->
+    <script src="lib/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="lib/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="lib/codemirror/addon/selection/active-line.js"></script>
+    <script src="lib/codemirror/addon/hint/show-hint.js"></script>
+    <script src="lib/codemirror/addon/hint/javascript-hint.js"></script>
+    <script src="lib/codemirror/addon/fold/foldcode.js"></script>
+    <script src="lib/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="lib/codemirror/addon/fold/brace-fold.js"></script>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <img src="img/code-logo.png" alt="AI Code Assistance Logo">
+            <h1>AI Code Assistance</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ai.html" class="active">Code Assistant</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="code-assistant-container">
+        <div class="editor-section">
+            <h2>Code Editor</h2>
+            <div class="language-selector">
+                <label for="language-select">Select Language:</label>
+                <select id="language-select">
+                    <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="csharp">C#</option>
+                    <option value="cpp">C++</option>
+                </select>
+            </div>
+            <div id="code-editor"></div>
+        </div>
+
+        <div class="ai-assistant-section">
+            <h2>AI Assistant</h2>
+            <div class="assistant-options">
+                <button id="analyze-btn">Analyze Code</button>
+                <button id="optimize-btn">Optimize</button>
+                <button id="explain-btn">Explain Code</button>
+                <button id="debug-btn">Debug</button>
+                <button id="translate-btn">Translate</button>
+            </div>
+            <div class="translation-options" id="translation-options" style="display: none; margin-top: 10px;">
+                <label for="target-language-select">Translate to:</label>
+                <select id="target-language-select">
+                    <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="csharp">C#</option>
+                    <option value="cpp">C++</option>
+                </select>
+                <button id="translate-confirm-btn" class="confirm-btn">Translate</button>
+            </div>
+            <div id="assistant-output">
+                <h3>Assistant Output</h3>
+                <div id="output-content">
+                    <p>Welcome to AI Code Assistance! Select a function above to get started.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/ai-assistant.js"></script>
+    <script src="js/chat.js"></script>
+    <script>
+        // Initialize CodeMirror editor
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language-specific example code
+            const exampleCode = {
+                javascript: '// JavaScript Example\n\nfunction factorial(n) {\n    if (n === 0 || n === 1) {\n        return 1;\n    }\n    return n * factorial(n - 1);\n}\n\n// Calculate factorial of 5\nconst result = factorial(5);\nconsole.log(`Factorial of 5 is: ${result}`);',
+                python: '# Python Example\n\ndef factorial(n):\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n-1)\n\n# Calculate factorial of 5\nresult = factorial(5)\nprint(f"Factorial of 5 is: {result}")',
+                java: '// Java Example\n\npublic class Factorial {\n    public static void main(String[] args) {\n        int num = 5;\n        long result = factorial(num);\n        System.out.println("Factorial of " + num + " is: " + result);\n    }\n    \n    public static long factorial(int n) {\n        if (n == 0 || n == 1) {\n            return 1;\n        }\n        return n * factorial(n - 1);\n    }\n}',
+                csharp: '// C# Example\n\nusing System;\n\nclass Program {\n    static void Main() {\n        int num = 5;\n        long result = Factorial(num);\n        Console.WriteLine($"Factorial of {num} is: {result}");\n    }\n    \n    static long Factorial(int n) {\n        if (n == 0 || n == 1) {\n            return 1;\n        }\n        return n * Factorial(n - 1);\n    }\n}',
+                cpp: '// C++ Example\n\n#include <iostream>\n\nlong factorial(int n) {\n    if (n == 0 || n == 1) {\n        return 1;\n    }\n    return n * factorial(n - 1);\n}\n\nint main() {\n    int num = 5;\n    long result = factorial(num);\n    std::cout << "Factorial of " << num << " is: " << result << std::endl;\n    return 0;\n}'
+            };
+            
+            const editor = CodeMirror(document.getElementById('code-editor'), {
+                mode: "javascript",
+                theme: "dracula",
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                styleActiveLine: true,
+                indentUnit: 4,
+                tabSize: 4,
+                indentWithTabs: true,
+                lineWrapping: true
+            });
+
+            // Set default content with JavaScript example
+            editor.setValue(exampleCode.javascript);
+
+            // Handle language changes
+            document.getElementById('language-select').addEventListener('change', function() {
+                const language = this.value;
+                let mode;
+                
+                switch(language) {
+                    case 'javascript': mode = 'javascript'; break;
+                    case 'python': mode = 'python'; break;
+                    case 'java': mode = 'text/x-java'; break;
+                    case 'csharp': mode = 'text/x-csharp'; break;
+                    case 'cpp': mode = 'text/x-c++src'; break;
+                    default: mode = 'javascript';
+                }
+                
+                // Set the language-specific example code
+                if (exampleCode[language]) {
+                    editor.setValue(exampleCode[language]);
+                } else {
+                    editor.setValue('// Write your ' + language + ' code here');
+                }
+                
+                editor.setOption('mode', mode);
+            });
+        });
+    </script>
+    <!-- Chat Feature -->
+    <button id="chat-button" class="chat-button">
+        <i class="fas fa-comments"></i>
+    </button>
+    
+    <div id="chat-container" class="chat-container">
+        <div class="chat-header">
+            <button id="users-button" class="users-button">
+                <i class="fas fa-users"></i>
+            </button>
+            <h3>Developers Chat</h3>
+            <button id="chat-close" class="chat-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div id="user-list" class="user-list">
+            <h4>Online Users</h4>
+            <ul id="user-list-items"></ul>
+        </div>
+        
+        <div id="chat-messages" class="chat-messages"></div>
+        
+        <div class="chat-input-container">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+            <button id="chat-code" class="chat-code">Send Code</button>
+            <button id="chat-send" class="chat-send">Send</button>
+        </div>
+    </div>
+    
+    <!-- Username Modal -->
+    <div id="username-modal" class="username-modal" style="display: none;">
+        <form id="username-form" class="username-form">
+            <h3>Enter Your Username</h3>
+            <input type="text" id="username-input" placeholder="Your name" required>
+            <button type="submit">Join Chat</button>
+        </form>
+    </div>
+</body>
+
+</html>
