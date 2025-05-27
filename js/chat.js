@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Connect to Socket.io server
     const socket = io();
     
+    // Create overlay element for blur effect
+    const overlay = document.createElement('div');
+    overlay.className = 'page-overlay';
+    document.body.appendChild(overlay);
+    
     // DOM elements
     const chatButton = document.getElementById('chat-button');
     const chatContainer = document.getElementById('chat-container');
@@ -34,6 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
     chatButton.addEventListener('click', function() {
         if (!currentUser.username) {
             usernameModal.style.display = 'flex';
+            setTimeout(() => {
+                usernameModal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.classList.add('chat-open');
+            }, 10);
         } else {
             toggleChat();
         }
@@ -46,23 +56,38 @@ document.addEventListener('DOMContentLoaded', function() {
         if (username) {
             currentUser.username = username;
             socket.emit('join', username);
-            usernameModal.style.display = 'none';
-            toggleChat();
+            usernameModal.classList.remove('active');
+            setTimeout(() => {
+                usernameModal.style.display = 'none';
+                // Don't remove overlay yet as we're opening the chat
+                toggleChat();
+            }, 300);
         }
     });
     
     // Toggle chat container visibility
     function toggleChat() {
-        chatContainer.classList.toggle('active');
-        // Scroll to bottom of messages when opening chat
-        if (chatContainer.classList.contains('active')) {
+        const isOpening = !chatContainer.classList.contains('active');
+        
+        if (isOpening) {
+            // Opening the chat
+            chatContainer.classList.add('active');
+            overlay.classList.add('active');
+            document.body.classList.add('chat-open');
             scrollToBottom();
+        } else {
+            // Closing the chat
+            chatContainer.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.classList.remove('chat-open');
         }
     }
     
     // Close chat when clicking the close button
     chatCloseButton.addEventListener('click', function() {
         chatContainer.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('chat-open');
     });
     
     // Toggle user list visibility
