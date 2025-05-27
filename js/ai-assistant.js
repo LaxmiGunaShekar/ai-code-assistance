@@ -190,7 +190,22 @@ document.addEventListener('DOMContentLoaded', function() {
      * Display output in the assistant output area
      */
     function displayOutput(content) {
+        // Add a class to the assistant section to handle expanded content
+        const aiAssistantSection = document.querySelector('.ai-assistant-section');
+        aiAssistantSection.classList.add('content-expanded');
+        
+        // Set the content
         outputContent.innerHTML = content;
+        
+        // Scroll to the top of the output content
+        outputContent.scrollTop = 0;
+        
+        // For mobile, ensure the container is visible
+        if (window.innerWidth <= 480) {
+            setTimeout(() => {
+                aiAssistantSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
     }
     
     /**

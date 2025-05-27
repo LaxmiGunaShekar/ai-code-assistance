@@ -305,11 +305,17 @@
         width: 70%;
         right: 20px;
         bottom: 90px;
+        max-height: 60vh;
     }
     
     .chat-button {
         right: 20px;
         bottom: 20px;
+    }
+    
+    /* Ensure chat doesn't go under header */
+    body.chat-open {
+        overflow: hidden;
     }
 }
 
@@ -318,5 +324,26 @@
         width: 90%;
         right: 5%;
         left: 5%;
+        max-height: 70vh;
+        top: auto;
+        bottom: 80px;
+        z-index: 1010;
+    }
+    
+    .chat-messages {
+        max-height: 40vh;
+        overflow-y: auto;
+    }
+    
+    .chat-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+    
+    .chat-input-container {
+        position: sticky;
+        bottom: 0;
+        z-index: 1;
     }
 }
