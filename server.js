@@ -7,7 +7,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 // Constants
 const PISTON_API = 'https://emkc.org/api/v2/piston';
